@@ -2,9 +2,9 @@ export function getConfigs() {
   return JSON.parse(localStorage.configs || "{}");
 }
 
-export function setConfigs(list) {
-  localStorage.configs = JSON.stringify(list);
-  return list;
+export function setConfigs(configs) {
+  localStorage.configs = JSON.stringify(configs);
+  return configs;
 }
 
 export function deleteConfigs() {
@@ -25,6 +25,7 @@ export function setConfigItem(name, item) {
 export function deleteConfigItem(name) {
   const configs = getConfigs();
   delete configs[name];
+  deleteVisibleConfigItem(name);
   return setConfigs(configs);
 }
 
@@ -47,13 +48,12 @@ export function isVisibleConfigItem(name) {
 }
 
 export function setVisibleConfigItem(name) {
-  const visibleConfigs = getVisiblevisibleConfigs();
+  const visibleConfigs = getVisibleConfigs();
   visibleConfigs.push(name);
   return setVisibleConfigs(visibleConfigs);
 }
 
 export function deleteVisibleConfigItem(name) {
   const visibleConfigs = getVisibleConfigs().filter((key) => key !== name);
-
-  return setConfigs(visibleConfigs);
+  return setVisibleConfigs(visibleConfigs);
 }

@@ -14,11 +14,11 @@ export default {
   setup() {
     const state = reactive({});
     onMounted(() => {
-      chrome?.tabs
-        ?.executeScript
-        // { code: "(function(){return;})();" },
-        // ([results]) => {}
-        ();
+      // chrome?.tabs
+      // ?.executeScript
+      // { code: "(function(){return;})();" },
+      // ([results]) => {}
+      // ();
     });
     return state;
   },
@@ -38,7 +38,5 @@ body {
   width: 250px;
   min-height: 250px;
   padding: 10px;
-  overflow-y: scroll;
-  overflow-x: hidden;
 }
 </style>

@@ -1,7 +1,8 @@
 <template>
   <div class="config-list">
     <config-item
-      v-for="[name, data] in configs"
+      v-for="[name, data] in Object.entries(state.configs)"
+      :deleteConfig="deleteConfig"
       :key="name"
       :name="name"
       :data="data"
@@ -12,17 +13,21 @@
 <script>
 import { reactive } from "vue";
 import ConfigItem from "./ConfigItem.vue";
-import { getConfigs } from "../utils/config";
+import { getConfigs, deleteConfigItem } from "../utils/config";
 export default {
   name: "ConfigList",
   components: { ConfigItem },
   props: {},
   setup(props) {
-    const configs = reactive(getConfigs());
-    console.log(configs);
+    const state = reactive({ configs: getConfigs() });
+
+    const deleteConfig = (name) => {
+      state.configs = deleteConfigItem(name);
+    };
 
     return {
-      configs: Object.entries(configs),
+      state,
+      deleteConfig,
     };
   },
 };
