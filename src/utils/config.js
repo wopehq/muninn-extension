@@ -57,3 +57,16 @@ export function deleteVisibleConfigItem(name) {
   const visibleConfigs = getVisibleConfigs().filter((key) => key !== name);
   return setVisibleConfigs(visibleConfigs);
 }
+
+export function getVisibleConfigList() {
+  const visibleConfigs = getVisibleConfigs();
+  const configs = getConfigs();
+
+  const current = {};
+
+  visibleConfigs.forEach((visibleKey) => {
+    current[visibleKey] = configs[visibleKey];
+  });
+
+  return current;
+}

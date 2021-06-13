@@ -5,6 +5,10 @@
 <script>
 import { reactive, onMounted } from "vue";
 import ConfigList from "./components/ConfigList.vue";
+import executeScript from "./utils/executeScript";
+import injectTooltip from "./inject/injectTooltip";
+import addHighlight from "./inject/addHighlight";
+import { getVisibleConfigList } from "./utils/config";
 
 export default {
   name: "App",
@@ -14,11 +18,8 @@ export default {
   setup() {
     const state = reactive({});
     onMounted(() => {
-      // chrome?.tabs
-      // ?.executeScript
-      // { code: "(function(){return;})();" },
-      // ([results]) => {}
-      // ();
+      executeScript(injectTooltip);
+      executeScript(addHighlight(getVisibleConfigList()));
     });
     return state;
   },

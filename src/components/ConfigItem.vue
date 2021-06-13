@@ -12,14 +12,18 @@
 </template>
 
 <script>
-import { reactive, computed } from "vue";
+import { reactive } from "vue";
 import VisibleIcon from "../icons/visible.vue";
 import InvisibleIcon from "../icons/invisible.vue";
 import TrashIcon from "../icons/trash.vue";
+import executeScript from "../utils/executeScript";
+import removeHighlight from "../inject/removeHighlight";
+import addHighlight from "../inject/addHighlight";
 import {
   isVisibleConfigItem,
   setVisibleConfigItem,
   deleteVisibleConfigItem,
+  getVisibleConfigList,
 } from "../utils/config";
 
 export default {
@@ -41,6 +45,9 @@ export default {
         setVisibleConfigItem(name);
         state.isVisible = true;
       }
+
+      executeScript(removeHighlight);
+      executeScript(addHighlight(getVisibleConfigList()));
     };
 
     const handleDelete = () => {
