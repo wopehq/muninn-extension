@@ -5,7 +5,7 @@
   "manifest_version": 2,
   "browser_action": {
     "default_popup": "index.html",
-    "default_icon": "lib/crow.png"
+    "default_icon": "favicon.png"
   },
   "permissions": ["activeTab", "<all_urls>"],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"

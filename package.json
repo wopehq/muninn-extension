@@ -1,0 +1,17 @@
+{
+  "name": "muninn-extension",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && cp ./manifest.json ./favicon.png dist/",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.0.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^1.1.2",
+    "@vue/compiler-sfc": "^3.0.5",
+    "vite": "^2.0.0-beta.50"
+  }
+}
