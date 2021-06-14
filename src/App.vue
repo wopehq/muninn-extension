@@ -37,7 +37,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   width: 300px;
-  min-height: 250px;
+  min-height: 150px;
   padding: 10px;
 }
 </style>

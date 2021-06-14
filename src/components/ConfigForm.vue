@@ -37,7 +37,7 @@ export default {
     const update = () => {
       handleUpdate(name, state.name, {
         parent: state.parent,
-        schema: JSON.parse(state.schema),
+        schema: state.schema ? JSON.parse(state.schema) : null,
       });
     };
 
