@@ -36,7 +36,7 @@ body {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  width: 250px;
+  width: 300px;
   min-height: 250px;
   padding: 10px;
 }
