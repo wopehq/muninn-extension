@@ -1,7 +1,31 @@
 <template>
   <div class="config-list">
-    <div class="new-config-area">
-      <button @click="openForm"><add-icon /> New Config</button>
+    <div
+      class="new-config-area"
+      :class="{ active: state.formVisible || state.importFormVisible }"
+    >
+      <button
+        class="import-button"
+        :class="{ close: state.importFormVisible }"
+        v-if="!state.formVisible"
+        @click="toggleImportForm"
+      >
+        {{ state.importFormVisible ? "Close" : "Import" }}
+      </button>
+      <config-import-form
+        v-if="state.importFormVisible"
+        :name="state.form.name"
+        :data="state.form.data"
+        :updateConfigs="updateConfigs"
+      />
+      <button
+        :class="{ close: state.formVisible }"
+        v-if="!state.importFormVisible"
+        @click="toggleForm"
+      >
+        <add-icon v-if="!state.formVisible" />
+        {{ state.formVisible ? "Close" : "New Config" }}
+      </button>
       <config-form
         v-if="state.formVisible"
         :name="state.form.name"
@@ -35,20 +59,26 @@ import removeHighlight from "../inject/removeHighlight";
 import executeScript from "../utils/executeScript";
 import AddIcon from "../icons/plus.vue";
 import ConfigForm from "../components/ConfigForm.vue";
+import ConfigImportForm from "../components/ConfigImportForm.vue";
 
 export default {
   name: "ConfigList",
-  components: { ConfigItem, ConfigForm, AddIcon },
+  components: { ConfigItem, ConfigImportForm, ConfigForm, AddIcon },
   props: {},
   setup(props) {
     const state = reactive({
       configs: getConfigs(),
       form: { name: "", data: {} },
       formVisible: false,
+      importFormVisible: false,
     });
 
-    const openForm = () => {
-      state.formVisible = true;
+    const toggleForm = () => {
+      state.formVisible = !state.formVisible;
+    };
+
+    const toggleImportForm = () => {
+      state.importFormVisible = !state.importFormVisible;
     };
 
     const deleteConfig = (name) => {
@@ -82,7 +112,8 @@ export default {
       deleteConfig,
       updateConfigs,
       handleUpdate,
-      openForm,
+      toggleForm,
+      toggleImportForm,
     };
   },
 };
@@ -99,8 +130,11 @@ export default {
 .new-config-area {
   margin-bottom: 10px;
   display: flex;
-  flex-direction: column;
   background-color: #7145b6;
+}
+
+.new-config-area.active {
+  flex-direction: column;
 }
 
 .new-config-area svg {
@@ -112,6 +146,7 @@ export default {
 button {
   background: #71a2fc;
   border: 0;
+  flex: 2;
   border-radius: 4px;
   padding: 8px;
   color: white;
@@ -123,5 +158,14 @@ button {
 
 button:hover {
   opacity: 0.8;
+}
+
+button.import-button {
+  background: #6f8ec9;
+  flex: 1;
+}
+
+button.close {
+  background: tomato;
 }
 </style>

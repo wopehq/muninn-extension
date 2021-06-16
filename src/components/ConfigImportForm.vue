@@ -1,16 +1,8 @@
 <template>
   <div class="config-item-edit-area">
     <div class="config-item-edit-field">
-      <span>Name*:</span>
-      <input v-model="state.name" type="text" />
-    </div>
-    <div class="config-item-edit-field">
-      <span>Parent:</span>
-      <input v-model="state.parent" type="text" />
-    </div>
-    <div class="config-item-edit-field">
       <span>Config*:</span>
-      <textarea v-model="state.schema" type="text" />
+      <textarea v-model="state.configs" type="text" />
     </div>
     <button @click="update">Save</button>
   </div>
@@ -18,27 +10,36 @@
 
 <script>
 import { reactive } from "vue";
+import {
+  deleteVisibleConfigs,
+  getConfigs,
+  setConfigs,
+  setVisibleConfigs,
+} from "../utils/config";
+import removeHighlight from "../inject/removeHighlight";
+import addHighlight from "../inject/addHighlight";
+import executeScript from "../utils/executeScript";
 
 export default {
-  name: "ConfigForm",
+  name: "ConfigImportForm",
   components: {},
   props: {
-    name: String,
-    data: Object,
-    handleUpdate: Function,
+    updateConfigs: Function,
   },
-  setup({ name, data, handleUpdate }) {
-    let state = reactive({
-      name,
-      parent: data.parent,
-      schema: JSON.stringify(data.schema, null, 2),
-    });
+  setup({ updateConfigs }) {
+    let state = reactive({ configs: JSON.stringify(getConfigs(), null, 2) });
 
     const update = () => {
-      handleUpdate(name, state.name, {
-        parent: state.parent,
-        schema: state.schema ? JSON.parse(state.schema) : null,
-      });
+      deleteVisibleConfigs();
+      const configs = JSON.parse(state.configs || "{}");
+      const visibleConfigs = Object.keys(configs);
+
+      setVisibleConfigs(visibleConfigs);
+      setConfigs(configs);
+
+      executeScript(removeHighlight);
+      executeScript(addHighlight(visibleConfigs));
+      updateConfigs(configs);
     };
 
     return {
