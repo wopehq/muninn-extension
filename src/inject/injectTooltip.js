@@ -1,5 +1,4 @@
 import tooltipStyle from "./tooltipStyle";
-import tooltipScript from "./tooltipScript";
 
 export default `
 function(){
@@ -22,11 +21,5 @@ function(){
     style.id = 'muninn-style';
     style.appendChild(document.createTextNode(\`${tooltipStyle}\`))
     document.body.appendChild(style);
-
-
-    var script = document.createElement('script');
-    script.id = 'muninn-script';
-    script.appendChild(document.createTextNode(\`${tooltipScript}\`));
-    document.body.appendChild(script);
 }
 `;

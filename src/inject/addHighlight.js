@@ -17,7 +17,7 @@ function() {
       selectors[config] = {};
     }
 
-    Object.keys(schema).forEach((key) => {
+    Object.keys(schema || {}).forEach((key) => {
       var current = schema[key];
       var currentKey = _key ? _key + "." + key : key;
 
