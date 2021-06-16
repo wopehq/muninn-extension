@@ -32,14 +32,13 @@ export default {
     const update = () => {
       deleteVisibleConfigs();
       const configs = JSON.parse(state.configs || "{}");
-      const visibleConfigs = Object.keys(configs);
 
-      setVisibleConfigs(visibleConfigs);
+      setVisibleConfigs([]);
       setConfigs(configs);
+      updateConfigs(configs);
 
       executeScript(removeHighlight);
       executeScript(addHighlight(visibleConfigs));
-      updateConfigs(configs);
     };
 
     return {
