@@ -12,18 +12,27 @@ export default `
   }
 
   .muninn_highlight {
-    background: #ffedaa;
+    background: #fdf0f0;
     padding: 3px;
     margin: 1px;
     cursor: pointer;
     opacity: 1;
     border-radius: 4px;
-    box-shadow: 0px 0px 1px 1px #d6bd60;
+    box-shadow: 0px 0px 1px 1px #ffd2d2;
   }
   
   .muninn_highlight_parent {
-    background: #fffbeb;
+    background: #fef8f8;
     border-radius: 4px;
+  }
+  
+  .muninn_active:hover {
+    background: #ffd2d2;
+    box-shadow: inset 0px 0px 0px 1px white;
+  }
+
+  .muninn_active:hover::before {
+    z-index: 2;
   }
 
   .muninn-tooltip span {
@@ -65,13 +74,5 @@ export default `
   .muninn-tooltip-selector {
     background: #54B8F7;
     border-top-left-radius: 0px !important;
-  }
-  
-  .muninn_active:hover {
-    box-shadow: inset 0px 0px 0px 1px white;
-  }
-
-  .muninn_active:hover::before {
-    z-index: 2;
   }
 `;
