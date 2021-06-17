@@ -22,6 +22,18 @@ export default `
     box-shadow: 0px 0px 1px 1px #ffd2d2;
   }
   
+  body.muninn-helper .muninn_highlight::before {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 10px;
+    min-height: 10px;
+    background: white;
+    border:2px solid #ff9292;
+    border-radius: 50%;
+    z-index: 9998;
+  }
+
   .muninn_highlight_parent {
     background: #fef8f8;
     border-radius: 4px;

@@ -5,6 +5,13 @@
       :class="{ active: state.formVisible || state.importFormVisible }"
     >
       <button
+        class="helper-button"
+        :class="{ active: state.helperStatus }"
+        @click="toggleHelper"
+      >
+        <circle-icon />
+      </button>
+      <button
         class="import-button"
         :class="{ close: state.importFormVisible }"
         v-if="!state.formVisible"
@@ -19,6 +26,7 @@
         :updateConfigs="updateConfigs"
       />
       <button
+        class="new-button"
         :class="{ close: state.formVisible }"
         v-if="!state.importFormVisible"
         @click="toggleForm"
@@ -54,16 +62,24 @@ import {
   setConfigItem,
   getVisibleConfigList,
 } from "../utils/config";
+import { enableHelper, disableHelper } from "../inject/helper";
 import addHighlight from "../inject/addHighlight";
 import removeHighlight from "../inject/removeHighlight";
 import executeScript from "../utils/executeScript";
 import AddIcon from "../icons/plus.vue";
+import CircleIcon from "../icons/circle.vue";
 import ConfigForm from "../components/ConfigForm.vue";
 import ConfigImportForm from "../components/ConfigImportForm.vue";
 
 export default {
   name: "ConfigList",
-  components: { ConfigItem, ConfigImportForm, ConfigForm, AddIcon },
+  components: {
+    ConfigItem,
+    ConfigImportForm,
+    ConfigForm,
+    AddIcon,
+    CircleIcon,
+  },
   props: {},
   setup(props) {
     const state = reactive({
@@ -72,6 +88,15 @@ export default {
       formVisible: false,
       importFormVisible: false,
     });
+
+    const toggleHelper = () => {
+      state.helperStatus = !state.helperStatus;
+      if (state.helperStatus) {
+        executeScript(enableHelper);
+      } else {
+        executeScript(disableHelper);
+      }
+    };
 
     const toggleForm = () => {
       state.formVisible = !state.formVisible;
@@ -112,6 +137,7 @@ export default {
       deleteConfig,
       updateConfigs,
       handleUpdate,
+      toggleHelper,
       toggleForm,
       toggleImportForm,
     };
@@ -146,7 +172,7 @@ export default {
 button {
   background: #71a2fc;
   border: 0;
-  flex: 2;
+  flex: 1;
   border-radius: 4px;
   padding: 8px;
   color: white;
@@ -162,10 +188,22 @@ button:hover {
 
 button.import-button {
   background: #6f8ec9;
-  flex: 1;
+  flex: 2;
 }
 
 button.close {
   background: tomato;
+}
+
+button.new-button {
+  flex: 3;
+}
+
+button.helper-button {
+  background: #b1b1b1;
+}
+
+button.helper-button.active {
+  background: #7853e9;
 }
 </style>
