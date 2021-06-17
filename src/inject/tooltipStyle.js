@@ -9,6 +9,7 @@ export default `
     left: 0;
     pointer-events: none;
     transition: .3s;
+    z-index: 99999;
   }
 
   .muninn_highlight {
