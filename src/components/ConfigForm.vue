@@ -12,7 +12,10 @@
       <span>Config*:</span>
       <textarea v-model="state.schema" type="text" />
     </div>
-    <button @click="update">Save</button>
+    <div class="actions">
+      <button class="close" @click="closeForms">Close</button>
+      <button @click="update">Save</button>
+    </div>
   </div>
 </template>
 
@@ -26,8 +29,9 @@ export default {
     name: String,
     data: Object,
     handleUpdate: Function,
+    closeForms: Function,
   },
-  setup({ name, data, handleUpdate }) {
+  setup({ name, data, handleUpdate, closeForms }) {
     let state = reactive({
       name,
       parent: data.parent,
@@ -44,6 +48,7 @@ export default {
     return {
       state,
       update,
+      closeForms,
     };
   },
 };
@@ -88,16 +93,29 @@ export default {
   min-height: 200px;
 }
 
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
 button {
   background: #71a2fc;
   border: 0;
+  display: flex;
+  flex: 1;
+  justify-content: center;
   border-radius: 4px;
   padding: 8px;
+  margin: 5px;
   color: white;
   box-shadow: 0px 1px 1px #401781;
   cursor: pointer;
   transition: 0.3s;
   margin-top: 10px;
+}
+
+button.close {
+  background: tomato;
 }
 
 button:hover {

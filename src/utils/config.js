@@ -47,6 +47,10 @@ export function isVisibleConfigItem(name) {
   return getVisibleConfigs().includes(name);
 }
 
+export function isAllVisibleConfigItems() {
+  return Object.keys(getConfigs()).every((item) => isVisibleConfigItem(item));
+}
+
 export function setVisibleConfigItem(name) {
   const visibleConfigs = getVisibleConfigs();
   visibleConfigs.push(name);

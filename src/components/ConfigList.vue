@@ -7,45 +7,54 @@
       <button
         class="helper-button"
         :class="{ active: state.helperStatus }"
+        v-if="!state.formVisible && !state.importFormVisible"
         @click="toggleHelper"
       >
         <circle-icon />
       </button>
       <button
         class="import-button"
-        :class="{ close: state.importFormVisible }"
         v-if="!state.formVisible"
         @click="toggleImportForm"
       >
-        {{ state.importFormVisible ? "Close" : "Import" }}
+        Import
       </button>
       <config-import-form
         v-if="state.importFormVisible"
         :name="state.form.name"
         :data="state.form.data"
         :updateConfigs="updateConfigs"
+        :closeForms="closeForms"
       />
       <button
         class="new-button"
-        :class="{ close: state.formVisible }"
         v-if="!state.importFormVisible"
         @click="toggleForm"
       >
         <add-icon v-if="!state.formVisible" />
-        {{ state.formVisible ? "Close" : "New Config" }}
+        New Config
       </button>
       <config-form
         v-if="state.formVisible"
         :name="state.form.name"
         :data="state.form.data"
         :handleUpdate="handleUpdate"
+        :closeForms="closeForms"
       />
+    </div>
+    <div class="visible-all" @click="toggleVisibleAllItems">
+      <span v-if="!isAllVisibleConfigItems()">
+        <visible-icon /> Visible All
+      </span>
+      <span v-if="isAllVisibleConfigItems()">
+        <invisible-icon /> Hidden All
+      </span>
     </div>
     <config-item
       v-for="[name, data] in Object.entries(state.configs)"
       :deleteConfig="deleteConfig"
       :updateConfigs="updateConfigs"
-      :key="name"
+      :key="name + isVisibleConfigItem(name)"
       :name="name"
       :data="data"
     />
@@ -61,6 +70,10 @@ import {
   setConfigs,
   setConfigItem,
   getVisibleConfigList,
+  getVisibleConfigs,
+  isVisibleConfigItem,
+  isAllVisibleConfigItems,
+  setVisibleConfigs,
 } from "../utils/config";
 import { enableHelper, disableHelper } from "../inject/helper";
 import addHighlight from "../inject/addHighlight";
@@ -68,6 +81,8 @@ import removeHighlight from "../inject/removeHighlight";
 import executeScript from "../utils/executeScript";
 import AddIcon from "../icons/plus.vue";
 import CircleIcon from "../icons/circle.vue";
+import VisibleIcon from "../icons/visible.vue";
+import InvisibleIcon from "../icons/invisible.vue";
 import ConfigForm from "../components/ConfigForm.vue";
 import ConfigImportForm from "../components/ConfigImportForm.vue";
 
@@ -79,10 +94,13 @@ export default {
     ConfigForm,
     AddIcon,
     CircleIcon,
+    VisibleIcon,
+    InvisibleIcon,
   },
   props: {},
-  setup(props) {
+  setup() {
     const state = reactive({
+      isAllVisible: isAllVisibleConfigItems(),
       configs: getConfigs(),
       form: { name: "", data: {} },
       formVisible: false,
@@ -106,6 +124,23 @@ export default {
       state.importFormVisible = !state.importFormVisible;
     };
 
+    const closeForms = () => {
+      state.formVisible = false;
+      state.importFormVisible = false;
+    };
+
+    const toggleVisibleAllItems = () => {
+      if (isAllVisibleConfigItems()) {
+        setVisibleConfigs([]);
+      } else {
+        setVisibleConfigs(Object.keys(getConfigs()));
+      }
+
+      updateConfigs(getConfigs());
+      executeScript(removeHighlight);
+      executeScript(addHighlight(getVisibleConfigList()));
+    };
+
     const deleteConfig = (name) => {
       state.configs = deleteConfigItem(name);
       executeScript(removeHighlight);
@@ -114,6 +149,8 @@ export default {
 
     const updateConfigs = (configs) => {
       state.configs = setConfigs(configs);
+      state.isAllVisible = isAllVisibleConfigItems();
+      console.log(state.isAllVisible);
     };
 
     const handleUpdate = async (id, name, data) => {
@@ -140,6 +177,10 @@ export default {
       toggleHelper,
       toggleForm,
       toggleImportForm,
+      toggleVisibleAllItems,
+      isVisibleConfigItem,
+      isAllVisibleConfigItems,
+      closeForms,
     };
   },
 };
@@ -167,6 +208,22 @@ export default {
   width: 12px;
   height: 12px;
   fill: white;
+}
+
+.visible-all span {
+  display: flex;
+  align-content: center;
+  font-size: 14px;
+  color: #71a2fc;
+  margin: 0px 0px 10px;
+  padding-left: 8px;
+  cursor: pointer;
+}
+
+.visible-all svg {
+  height: 16px;
+  fill: #90b6fd;
+  margin-right: 10px;
 }
 
 button {

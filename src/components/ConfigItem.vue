@@ -68,6 +68,7 @@ export default {
         state.isVisible = true;
       }
 
+      updateConfigs(getConfigs());
       executeScript(removeHighlight);
       executeScript(addHighlight(getVisibleConfigList()));
     };
